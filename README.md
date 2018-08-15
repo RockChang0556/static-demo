@@ -1,3 +1,11 @@
-# Welcome to My Pages
-这里存放的都是本人自己平时做的一些静态Demo
-[在线预览](https://rock-zhang1.github.io/static-demo/)
+# DEMO合集
+
+### 项目介绍
+这里存放的都是本人自己平时做的一些静态Demo [在线预览](https://rock-zhang1.github.io/static-demo/)
+
+- **浏览器支持版本:**
+    - IE 10+
+    - 主流浏览器
+
+### 技术栈
+HTML + JS + CSS
