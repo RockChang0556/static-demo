@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>3D立体轮播</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			body{
+				overflow: hidden;
+			}
+			ul {
+				position: fixed;
+				left: calc(50% - 50px);
+				width: 120px;
+				bottom: 0;
+			}
+			
+			ul li {
+				float: left;
+				width: 30px;
+				background: #FF00FF;
+				margin-top: 5px;
+				height: 120px;
+				line-height: 30px;
+				color: #fff;
+				position: relative;
+				bottom: -90px;
+				transition: .5s;
+				cursor: no-drop;
+			}
+			
+			/*ul li:hover {
+				left: 0;
+			}*/
+			
+			ul li b {
+				float: right;
+				width: 30px;
+				text-align: center;
+			}
+			.box {
+				width: 1200px;
+				height: 600px;
+				margin: 30px auto;
+				perspective: 1200px;
+				position: relative;
+/*				overflow: hidden;*/
+			}
+			
+			.wrap {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				transform-style: preserve-3d;
+				transform-origin: center center 600px;
+				transition: 1s;
+			}
+			
+			/*.wrap:hover {
+				transform: rotateY(360deg);
+			}*/
+			
+			.wrap div {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				font: bold 122px/600px arial;
+				top: 0;
+				left: 100%;
+				text-align: center;
+				transform: rotateY(-90deg);
+				opacity: 0;
+			}
+			
+			/*.wrap div span {
+				display: block;
+				width: 1000px;
+				height: 600px;
+				margin: 0 auto;
+			}*/
+			.wrap div img {
+				display: block;
+				width: 1000px;
+				height: 600px;
+				margin: 0 auto;
+			}
+			.wrap .show{
+				left: 0;
+				transform: rotateX(0deg);
+				transition: 1.6s;
+				opacity: 1;
+			}
+			/*
+			.wrap div:nth-of-type(2) {
+				left: 100%;
+				transform-origin: left;
+				transform: rotateY(-90deg);
+			}
+			
+			.wrap div:nth-of-type(3) {
+				left: 0;
+				transform: translateZ(1200px);
+			}
+			
+			.wrap div:nth-of-type(4) {
+				left: -100%;
+				transform-origin: right;
+				transform: rotateY(90deg);
+			}*/
+			.wrap .next{
+				left: 100%;
+				transform-origin: left;
+				transition: 1.5s;
+				transform: rotateY(-90deg);
+			}
+			.wrap .prev{
+				left: -100%;
+				transform-origin: right;
+				transition: 1.5s;
+				transform: rotateY(90deg);
+			}
+			/*.wrap div:nth-of-type(1) span {
+				background: #cf1;
+			}
+			
+			.wrap div:nth-of-type(2) span {
+				background: #cf9;
+			}
+			
+			.wrap div:nth-of-type(3) span {
+				background: #cc9;
+			}
+			
+			.wrap div:nth-of-type(4) span {
+				background: red;
+			}*/
+			p a{
+				position: absolute;
+				top: 50%;
+				font: 30px/60px "微软雅黑";
+				text-decoration: none;
+				background: #000000;
+				color: #fff;
+			}
+			p a:last-child{
+				right: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<ul>
+			<li><b>1</b></li>
+			<li><b>2</b></li>
+			<li><b>3</b></li>
+			<li><b>4</b></li>
+		</ul>
+		<!--<div class="box">
+			<div class="wrap">
+				<div class="show"><span>1</span></div>
+				<div><span>2</span></div>
+				<div><span>3</span></div>
+				<div><span>4</span></div>
+			</div>
+			<p><a href="javascript:;"><</a><a href="javascript:;">></a></p>
+		</div>-->
+		<div class="box">
+			<div class="wrap">
+				<div class="show"><img src="img/1.jpg"/></div>
+				<div><img src="img/2.jpg"/></div>
+				<div><img src="img/3.jpg"/></div>
+				<div><img src="img/4.jpg"/></div>
+			</div>
+			<p><a href="javascript:;"><</a><a href="javascript:;">></a></p>
+		</div>
+	</body>
+<script src="./js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var len = $("ul li").length,
+			count = 0,
+			timer = null;
+			
+		$("ul li").on('click', function(){
+			count = $(this).index();
+			show();
+		})
+		
+		$('p a').eq(0).on('click', function(){
+			count --;
+			if(count < 0){
+				count = len - 1;
+			}
+			show();
+		})
+		
+		$('p a').eq(1).on('click', function(){
+			count ++;
+			if(count > len - 1){
+				count = 0;
+			}
+			show();
+		})
+		
+		$('.box').add('ul').hover(function(){
+			clearInterval(timer);
+		}, function(){
+			t();
+		})
+		
+		t();
+		function t(){
+			 clearInterval(timer);
+			timer = setInterval(function(){
+				count ++;
+				if(count > len - 1){
+					count = 0;
+				}
+				show();
+			},2000)
+		}
+		
+		function show(){
+			$("ul li").eq(count).css('bottom', 0).siblings().css('bottom', '-90px');
+			$('.wrap div').eq(count).addClass('show').removeClass('prev next').siblings().removeClass('show');;
+			$('.wrap div').eq(count).prevAll().addClass('prev').removeClass('show next');
+			$('.wrap div').eq(count).nextAll().addClass('next').removeClass('show prev');
+			
+			if(count === 0){
+				$('.wrap div').eq(len-1).addClass('prev').removeClass('show next');
+			}else if(count === len-1){
+				$('.wrap div').eq(0).addClass('next').removeClass('show prev');
+			}else{
+			}
+		}
+	})
+</script>
+</html>

@@ -1,0 +1,108 @@
+	<!doctype html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			#rDiv{
+				position:fixed;
+				right:-100px;
+				bottom:50px;
+				display: none;
+			}
+			#rDiv #list li{
+				width:200px;
+				line-height: 50px;
+				background:#aaa;
+				color:#fff;
+			}
+			#bigDiv div{
+				color:#fff;
+				font-weight:bold;
+				font-size: 100px;
+				text-align: center;
+				margin: 0 auto;
+			}
+			#return{
+				position: fixed;
+				width:100px;
+				background:#aaa;
+				line-height: 50px;
+				right: 0;
+				bottom: 0;
+				text-align: center;
+				color:#fff;
+			}
+			#list li{
+				margin-left: 100px;
+				transition: 0.3s;
+				text-align: center;
+			}
+			#list li span{
+				margin-left: 70px;
+			}
+			#list .active{
+				margin-left: 0px;
+			}		
+		</style>
+	</head>
+	<body>
+		<div id="rDiv">
+			<ul id="list">
+				<li>1F<span>儿童玩具</span></li>
+				<li>2F<span>时尚男装</span></li>
+				<li>3F<span>电玩城</span></li>
+				<li>4F<span>美食城</span></li>
+				<li>5F<span>物美超市</span></li>
+			</ul>
+			<div id="return">↑</div>
+		</div>
+		<div id="bigDiv">
+			<div style="background:red;height:500px;line-height:500px">1F</div>
+			<div style="background:blue;height:700px;line-height:700px">2F</div>
+			<div style="background:green;height:900px;line-height:900px">3F</div>
+			<div style="background:yellow;height:600px;line-height:600px">4F</div>
+			<div style="background:pink;height:800px;line-height:800px">5F</div>
+		</div>
+		<script src="./js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var arr = [];
+				$("#bigDiv div").each(function(){
+					arr.push($(this).offset().top);
+				})
+				$(window).on("scroll",function(){
+					var top = $(this).scrollTop();
+					if (top > 100) {
+						$("#rDiv").show();
+					}else{
+						$("#rDiv").hide();
+					}
+					
+					$.each(arr, function(i,val) {
+						if (val <= top) {
+							$("#list li").eq(i).addClass("active").siblings().removeClass("active");
+						}
+					});
+				});
+				
+				$("#list li").on("click",function(){
+					var ind = $(this).index();	
+					$("#list li").eq(ind).addClass("active").siblings().removeClass("active");
+					$("body").stop().animate({"scrollTop":arr[ind]},500);
+					console.log(1);
+				});
+				
+				//点击回到顶部
+				$("#return").on("click",function(){
+					$("body").stop().animate({"scrollTop":0},500);
+				})
+			})
+		</script>
+	</body>
+	</html>

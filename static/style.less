@@ -14,7 +14,16 @@ body {
     margin: 100px auto;
 }
 #demo-list{
-    overflow: hidden;
+    padding: 20px 0;
+    zoom: 1;
+    &:after {
+        content: ".";
+        clear: both;
+        display: block;
+        overflow: hidden;
+        font-size: 0;
+        height: 0;
+    }
     .demo-box {
         float: left;
         width: 250px;

@@ -34,6 +34,24 @@ $(document).ready(function(){
             href: './demoList/3D折纸菜单/index.html',
             img: './demoList/3D折纸菜单/index.png'
         },
+        {
+            title: '黑客代码雨',
+            details: '黑客代码雨 黑客代码雨',
+            href: './demoList/黑客代码雨/index.html',
+            img: './demoList/黑客代码雨/index.png'
+        },
+        {
+            title: '电商图片放大镜',
+            details: '电商图片放大镜 电商图片放大镜',
+            href: './demoList/电商图片放大镜/index.html',
+            img: './demoList/电商图片放大镜/index.png'
+        },
+        {
+            title: '楼层效果',
+            details: '楼层效果 楼层效果',
+            href: './demoList/楼层/index.html',
+            img: './demoList/楼层/index.png'
+        },
     ]
     let _demoList = $('#demo-list');
 

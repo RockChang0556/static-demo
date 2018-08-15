@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			#box .main{
+				width: 100%;
+				height:500px;
+				text-align: center;
+				font-size: 80px;
+				color: #fff;
+			}
+			#box .main1{
+				background:red;
+				height: 800px;
+			}
+			#box .main2{
+				background:orange;
+				height: 700px;
+			}
+			#box .main3{
+				background:yellow;
+				height: 600px;
+			}
+			#box .main4{
+				background:green;
+				height: 500px;
+			}
+			#box .main5{
+				background:blue;
+				height: 600px;
+			}
+			#box .main6{
+				background:blueviolet;
+				height: 700px;
+			}
+			#mainUl{
+				position:fixed;
+				right:0px;
+				bottom:50px;
+				/*display: none;*/
+			}
+			#mainUl li{
+				cursor:pointer;
+				margin: 2px 0;
+				background: #fff;
+				width: 30px;
+				height: 30px;
+				line-height: 30px;
+				padding-left: 5px;
+				position: relative;
+			}
+			#mainUl li span{
+				display: block;
+				padding: 0 5px;
+				background: #fff;
+				width: 65px;
+				height: 30px;
+				position: absolute;
+				left: 35px;
+				top:0px;
+				border-bottom-left-radius: 5px;
+				border-top-left-radius: 5px;
+				transition: 0.3s ease-out;
+				z-index: -1;
+			}
+			#mainUl .active{
+				color:#fff;
+				background:#000;
+			}
+			#mainUl .active span{
+				left: -75px;
+				background:#000;
+			}
+		</style>
+		<script src="./js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var arr = [];
+				var arr2 = ['精品男装','乐趣童装','时尚女装','大美食城','大娱乐城','大电影院'];
+				
+				var clientH = document.documentElement.clientHeight;
+				// 可视区的高随窗口大小而改变
+				$(window).resize(function(){
+					clientH = document.documentElement.clientHeight;
+				})
+				
+				$(".main").each(function(i){
+					// 储存每个楼层到顶部的距离
+					arr.push($(".main:eq("+i+")").offset().top);
+					// 创建楼标
+					oLi = $("<li index="+i+">"+(i+1)+"F  <span>"+arr2[i]+"</span></li>");
+					if(i == 0)oLi.addClass("active");
+					$("#mainUl").append(oLi);
+				})
+				
+				// 楼标随页面滚动变化
+				$(window).scroll(function(){
+					var scrollTop = $(this).scrollTop();
+					var mainTop = $(window).height() / 2 + scrollTop;
+					
+					if(scrollTop>100){
+						$("#mainUl").fadeIn();
+					}else{
+						$("#mainUl").fadeOut();
+					}
+					
+					$.each(arr,function(i){
+						if(arr[i]<=mainTop && arr[i+1]>=mainTop){
+							$("#mainUl li").eq(i).addClass("active")
+								.siblings().removeClass("active");
+						}
+						// 判断 是否到了最后一个
+						if(mainTop>=arr[arr.length-1]){
+							$("#mainUl li").eq(i).addClass("active")
+								.siblings().removeClass("active");
+						}
+					})
+				})
+				
+				// 点击楼标
+				$("#mainUl li").click(function(){
+					var ind = $(this).index();
+					$("body").stop().animate({"scrollTop":arr[ind]},500);
+				})
+				
+			})
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<div class="main main1">一楼</div>
+			<div class="main main2">二楼</div>
+			<div class="main main3">三楼</div>
+			<div class="main main4">四楼</div>
+			<div class="main main5">五楼</div>
+			<div class="main main6">六楼</div>
+		</div>
+		<ul id="mainUl"></ul>
+	</body>
+</html>
