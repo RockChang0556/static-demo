@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			body{
+				background-color: #E5E5E5;
+			}
+			.wrap{
+				width: 940px;
+				height: 100%;
+				box-shadow: 0px 0px 2px 3px #CCCCCC;
+				margin: 50px auto;
+				background-color: white;
+			}
+			.head{
+				width: 840px;
+				height: 158px;
+				margin: 0 50px;
+				overflow: hidden;
+				position: relative;
+			}
+			.productList{
+				width: 1680px;
+			}
+			.productList li{
+				width: 140px;
+				float: left;
+				text-align: center;
+			}
+			.productList li:hover a{
+				color: black;
+			}
+			.productList li img{
+				display: block;
+			}
+			.productList li a,.foot a{
+				font-size: 14px;
+				color: #A2A3A8;
+			}
+			.foot{
+				height: 30px;
+				text-align: center;
+				line-height: 30px;
+				background: url(img/nav_bg.png);
+			}
+			.foot span{
+				display: block;
+				width: 15px;
+				height: 8px;
+				background: url(img/caret_active.png);
+				position: absolute;
+				left: 695px;
+			}
+			.foot a{
+				margin: 0 10px;
+			}
+			.foot .active{
+				color: #000000;
+			}
+		</style>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/move.js"></script>
+		<script>
+			$(function(){
+				// 转换布局
+				var arr = [];
+				$('.productList li').each(function(){
+					arr.push($(this).position().left);
+					$(this).css('left',$(this).position().left)
+				})
+				$('.productList li').each(function(){
+					$(this).css({
+						'position' : 'absolute',
+						'margin' : 0
+					})
+				})
+				
+				// 点击第二个
+				$('.foot a:eq(1)').on('click',function(){
+					var i = 0;
+					// 标签改变
+					play(1);
+					
+					// 内容改变
+					var timer = setInterval(function(){
+						$('.productList li').eq(i).animate({'left':-960+i*140},800,'bounceOut');
+						i ++;
+						if(i>=$('.productList li').length/2){
+							clearInterval(timer);
+							setTimeout(function(){
+								next2();
+							},100)
+							
+						}
+					},100)
+					
+					function next2(){
+						var timer = setInterval(function(){
+							$('.productList li').eq(i).animate({
+								'left':arr[i-$('.productList li').length/2]
+								 },800,'elasticOut');
+							i ++;
+							if(i>=$('.productList li').length){
+								clearInterval(timer);
+							}
+						},100)
+					}
+				})
+				
+				// 点击第一个
+				$('.foot a:eq(0)').on('click',function(){
+					var i = $('.productList li').length;
+					play(0);
+					
+					// 内容改变
+					var timer = setInterval(function(){
+						$('.productList li').eq(i).animate({'left':i*140},800,'bounceOut');
+						i --;
+						if(i<=$('.productList li').length/2){
+							clearInterval(timer);
+							setTimeout(function(){
+								next2();
+							},100)
+							
+						}
+					},100)
+					function next2(){
+						var timer = setInterval(function(){
+							$('.productList li').eq(i).animate({
+								'left':arr[i]
+								 },800,'elasticOut');
+							i --;
+							if(i<0){
+								clearInterval(timer);
+							}
+						},100)
+					}
+				})
+				
+				function play(n){
+					// 标签改变
+					setTimeout(function(){
+						$('.foot a').eq(n).addClass('active').siblings().removeClass('active');
+					},0)
+					$('.caret').animate({'left':$('.foot a').eq(n).position().left+$('.foot a').eq(n).width()/2},500);
+				}
+			})
+		</script>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="head">
+				<ul class="productList">
+					<li><a href="javacript:;"><img src="img/1.jpg"/>iPod shuffle</a></li>
+					<li><a href="javacript:;"><img src="img/2.jpg"/>iPod nano</a></li>
+					<li><a href="javacript:;"><img src="img/3.jpg"/>iPod classic</a></li>
+					<li><a href="javacript:;"><img src="img/4.jpg"/>iPod touch</a></li>
+					<li><a href="javacript:;"><img src="img/5.jpg"/>Apple TV</a></li>
+					<li><a href="javacript:;"><img src="img/6.jpg"/>Accessories</a></li>
+					<li><a href="javacript:;"><img src="img/7.jpg"/>Download iTunes 10</a></li>
+					<li><a href="javacript:;"><img src="img/8.jpg"/>iTunes Gift Cards</a></li>
+					<li><a href="javacript:;"><img src="img/9.jpg"/>Nike + iPod</a></li>
+					<li><a href="javacript:;"><img src="img/10.jpg"/>(PRODUCT) RED</a></li>
+					<li><a href="javacript:;"><img src="img/11.jpg"/>MobileMe</a></li>
+					<li><a href="javacript:;"><img src="img/12.jpg"/>In-Ear Headphones</a></li>
+				</ul>
+			</div>
+			<div class="foot">
+				<span class="caret"></span>
+				<a href="javascript:;" class="active">Products</a>
+				<a href="javascript:;">iTunes and more</a>
+			</div>				
+		</div>
+	</body>
+</html>

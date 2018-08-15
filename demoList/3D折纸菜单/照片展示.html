@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			body{
+				background-color: #FAFAD2;
+			}
+			.pics{
+				width: 710px;
+				height: 390px;
+				margin: 100px auto;
+				position: relative;
+			}
+			.pics ul li{
+				position: absolute;
+				left: 0;
+				width: 690px;
+				height: 370px;
+				border: 10px solid #fff;
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0,0,0,0.5);
+				background: url(img/1.jpeg) no-repeat 100%;
+			}
+			.btn2 a{
+				display: block;
+				width: 40px;
+				height: 42px;
+				background: #fff url(img/btn.png);
+				border-radius: 10px;
+				position: absolute;
+				top: calc(50% - 20px);
+				opacity: 0;
+				transition: .5s;
+				z-index: 999;
+			}
+			.pics:hover .btn2 a{
+				opacity: 1;
+			}
+			.btn2 a:first-child{
+				left: -25px;
+				background-position: 0px 42px;
+			}
+			.btn2 a:first-child:hover{
+				background-position: 0px 2px;
+			}
+			.btn2 a:last-child{
+				right: -25px;
+				background-position: 40px 42px;
+			}
+			.btn2 a:last-child:hover{
+				background-position: 40px 2px;
+			}
+		</style>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var imgArr = [
+					'img/1.jpeg',
+					'img/2.jpeg',
+					'img/3.jpeg',
+					'img/4.jpeg'
+				]
+				
+				var len = imgArr.length,
+					n = 0,
+					iNow = 0,
+					zIndex = len;
+				$.each(imgArr,function(i){
+					var oImg = new Image();
+					oImg.src = imgArr[i];
+					oImg.onload = function(){
+						n ++;
+						if(n == len){
+							start();
+						}
+					}
+				})
+				
+				$('.btn2 a').eq(0).on('click',function(){
+					iNow --;
+					if(iNow < 0){
+						iNow = len - 1;
+					}
+					$('.pics ul li').eq(iNow).css({
+						'transition' : '1s',
+						'left' : '-100%',
+						'opacity' : 0
+					})
+					$('.pics ul li').eq(iNow)[0].addEventListener('webkitTransitionEnd',end,false);
+				})
+				$('.btn2 a').eq(1).on('click',function(){
+					iNow ++;
+					if(iNow > len - 1){
+						iNow = 0;
+					}
+					$('.pics ul li').eq(iNow).css({
+						'transition' : '1s',
+						'left' : '100%',
+						'opacity' : 0
+					})
+					$('.pics ul li').eq(iNow)[0].addEventListener('webkitTransitionEnd',end,false);
+				})
+				
+				function end(){
+					var that = $(this);
+					that[0].removeEventListener('webkitTransitionEnd',end,false);
+					zIndex ++;
+					that.css({
+						'transition' : 'none',
+						'transform':'rotate('+that.attr('iDeg')+'deg) scale(1.2)',
+						'z-index' : zIndex
+					})
+					setTimeout(function(){
+						that.css({
+							'transition' : '1s',
+							'left' : '0',
+							'transform':'rotate('+that.attr('iDeg')+'deg) scale(1)',
+							'opacity' : 1,
+						})
+					},300)
+					
+				}
+				
+				function start(){
+					$.each(imgArr,function(i){
+						var li = $('<li style="background: url('+imgArr[i]+');z-index: '+(len-i)+';"></li>');
+						var iDeg = Math.floor(Math.random()*100)%3 + i*4;  // 随机度数
+						li.attr('iDeg',iDeg);
+						li.css({
+							'transform':'rotate('+iDeg+'deg) scale(1.5)',
+							'opacity' : 0
+						});
+						$('.pics ul').append(li);
+					})
+					setTimeout(function(){
+						show();
+					},100)
+				}
+				
+				// 打开页面展示图片
+				function show(){
+					$('.pics ul li').each(function(i){
+						$(this).css({
+							'transition' : '.5s '+(len-i)*400+'ms',
+							'transform' : 'rotate('+$(this).attr('iDeg')+'deg) scale(1.0)',
+							'opacity' : 1
+						})
+					})
+				}
+			})
+		</script>
+	</head>
+	<body>
+		<div class="pics">
+			<ul></ul>
+			<div class="btn2">
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+			</div>
+		</div>
+	</body>
+</html>

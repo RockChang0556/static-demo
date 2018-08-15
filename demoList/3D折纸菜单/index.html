@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			body{
+				perspective: 800px
+				
+			}
+			@keyframes open{
+				0%{-webkit-transform:rotateX(-120deg);}	
+				40%{-webkit-transform:rotateX(25deg);}
+				60%{-webkit-transform:rotateX(-18deg);}
+				80%{-webkit-transform:rotateX(10deg);}
+				100%{-webkit-transform:rotateX(0deg);}
+			}
+			.wrap{
+				width: 302px;
+				margin: 20px auto;
+				position: relative;
+				transform-style: preserve-3d;
+				transition: .5s;
+				
+			}
+			.wrap div{
+				position: absolute;
+				left: 0;
+				top: 53px;
+				transform-style: preserve-3d;
+				transform-origin: top;
+				transform: rotateX(-120deg);
+				perspective: 4000px;
+				transition: .5s;
+			}
+			.wrap>div{
+				top: 52px;
+			}
+			.wrap .open{
+				animation: open 1.8s forwards;
+			}
+			.wrap span{
+				display: block;
+				width: 300px;
+				height: 50px;
+				border: 1px solid #CCCCCC;
+				font: 16px/50px "微软雅黑";
+				background-color: #AAAAAA;
+				text-indent: 15px;
+				transition: .5s;
+				color: white;
+				box-shadow:inset 0 0 30px 20px rgba(0,0,0,1);
+			}
+			.wrap .open>span{
+				box-shadow:inset 0 0 30px 20px rgba(0,0,0,0);
+			}
+			.wrap span:hover{
+				text-indent: 30px;
+				background: #f60;
+			}
+			.wrap h3{
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				background-color: #696969;
+				color: white;
+			}
+		</style>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var len = $('.wrap div').length;
+				var onOff = false,
+					timer = null,
+					timer2 = null;
+					 
+				// 悬浮改变大盒子角度
+				var wrapC = $('.wrap').offset().left+$('.wrap').width()/2;
+				$('.wrap').on('mousemove',function(ev){
+					var x = ev.pageX - wrapC;
+					if(x<0){
+						$(this).css('transform','rotateY(-20deg)');
+					}else{
+						$(this).css('transform','rotateY(20deg)');
+					}
+					/*var deg = 50/150*x;
+					$(this).css('transform','rotateY('+deg+'deg)');*/
+				})
+				$('.wrap').on('mouseout',function(){
+					$(this).css('transform','rotateY(0deg)');
+				})
+					
+				// 点击展开
+				$('.wrap h3').on('click',function(){
+					if(!onOff){
+						var i = 0;
+						timer = setInterval(function(){
+							$('.wrap div').eq(i).addClass('open');
+							i++;
+							if(i>len-1){
+								clearInterval(timer);
+							}
+						},100)
+					}else{
+						var j = len-1;
+						timer2 = setInterval(function(){
+							$('.wrap div').eq(j).removeClass('open');
+							j--;
+							if(j<0){
+								clearInterval(timer2);
+							}
+						},50)
+					}
+					onOff = !onOff;
+				})
+			})
+		</script>
+	</head>
+	<body>
+		
+		<!--<button>展开</button>
+		<button>收缩</button>-->
+		
+		<div class="wrap">
+			<h3>标题</h3>
+			<div>
+				<span>第一页</span>
+				<div>
+					<span>第二页</span>
+					<div>
+						<span>第三页</span>
+						<div>
+							<span>第四页</span>
+							<div>
+								<span>第五页</span>
+								<div>
+									<span>第六页</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
