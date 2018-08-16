@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				text-decoration: none;
+			}
+			#pageNav a{
+				margin: 0 5px;
+				color: black;
+			}
+			#pageNav span{
+				color: red;
+			}
+		</style>
+		<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				/*
+				 页码显示jquery插件,只需要存在#pageNav,则会在其中显示页码.
+				 示例(注意：页面中放置id为pageNav的html对象):
+				 //初始跳到第3页,共33页
+				 pageNav.go(3,33);
+				 */
+				
+				var pageNav = pageNav || {};
+				pageNav.fn = null;
+				//p为当前页码,pn为总页数
+				pageNav.nav = function(p, pn) {
+					//只有一页,直接显示1
+					if(pn <= 1) {
+						this.p = 1;
+						this.pn = 1;
+						return this.pHtml2(1);
+					}
+					if(pn < p) {
+						p = pn;
+					};
+					var re = "";
+					//第一页
+					if(p <= 1) {
+						p = 1;
+					} else {
+						//非第一页
+						re += this.pHtml(p - 1, "上一页");
+						//总是显示第一页页码
+						re += this.pHtml(1, "1");
+					}
+					//校正页码
+					this.p = p;
+					this.pn = pn;
+
+					//开始页码
+					var start = 2;
+					var end = (pn < 7) ? pn : 5;
+					//是否显示前置省略号,即大于10的开始页码
+					if(p >= 5) {
+						re += "...";
+						start = p - 2;
+						var e = p + 2;
+						end = (pn < e) ? pn : e;
+					}
+					for(var i = start; i < p; i++) {
+						re += this.pHtml(i);
+					};
+					re += this.pHtml2(p);
+					for(var i = p + 1; i <= end; i++) {
+						re += this.pHtml(i);
+					};
+					if(end < pn) {
+						re += "...";
+						//显示最后一页页码,如不需要则去掉下面这一句
+						re += this.pHtml(pn);
+					};
+					if(p < pn) {
+						re += this.pHtml(p + 1, "下一页");
+					};
+					return re;
+				};
+				//显示非当前页
+				pageNav.pHtml = function(pageNo,  showPageNo) {
+					showPageNo = showPageNo || pageNo;
+					var H = " <a href='#" + pageNo + "'>" + showPageNo + "</a> ";
+					return H;
+				};
+
+				//显示当前页
+				pageNav.pHtml2 = function(pageNo) {
+					var H = " <span class='cPageNum'>" + pageNo + "</span> ";
+					return H;
+				};
+
+				//输出页码,可根据需要重写此方法
+				pageNav.go = function(p, pn) {
+					$("#pageNav").html(this.nav(p, pn));
+					// 点击
+					$("#pageNav").find("a").click(function(){
+						$("#pageNav").html('');
+						var nowNum = parseInt($(this).attr("href").slice(1));
+						pageNav.go(nowNum,pn);
+					})
+				};
+				pageNav.go(6,9);
+
+//				$("#pageNav").html(pageNav.nav(1, 10)); //如果使用jQuery可用此句
+//				$("#pageNav").find("a").click(function(){
+//					console.log(nowNum)
+//					$("#pageNav").html('');
+//					var nowNum = parseInt($(this).attr("href").slice(1));
+//					$("#pageNav").html(pageNav.nav(nowNum, 10));
+//				})
+			})
+		</script>
+	</head>
+
+	<body>
+		<div id="pageNav"></div>
+	</body>
+
+</html>

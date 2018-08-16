@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>分页器</title>
+		<style type="text/css">
+			*{
+				text-decoration: none;
+			}
+			#pageNav a{
+				margin: 0 5px;
+				color: black;
+			}
+			#pageNav span{
+				color: red;
+			}
+		</style>
+		<script src="js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				pageNav("pageNav",6,10)
+				
+				// 参数 id，当前页，总页数
+				function pageNav(id,nowNum,allNum){
+					if(!id){return false};
+					var obj = $("#"+id);
+					var nowNum = nowNum || 1,
+						allNum = allNum || 5;
+						
+					var str = '';
+					if(nowNum <= 1) {
+						nowNum = 1;
+					}else {
+						//非第一页
+						str += aHtml(nowNum - 1, "上一页");
+						//总是显示第一页页码
+						str += aHtml(1, "1");
+					} 
+					
+					// 中间部分
+					var start = 2;  // 中间部分开始位置
+					var end = (allNum < 7) ? allNum : 5;
+					if(nowNum >= 5){
+						str += '...';
+						start = nowNum-2;
+						var e = nowNum+2;
+						end = allNum<e ? allNum : e;  //中间部分结束位置
+					}
+					console.log(end)
+					for(var i=start;i<nowNum;i++){
+						str += aHtml(i);
+					}
+					str += spanHtml(nowNum);
+					for(var i=nowNum+1;i<=end;i++){
+						str += aHtml(i);
+					}
+					
+					if((allNum-nowNum)>2){
+						str += '...';
+						//总是显示最后一页页码，不需要可删除
+						str += aHtml(allNum,allNum);
+					}
+					if(nowNum<allNum){
+						str += aHtml(nowNum+1, "下一页");
+					}
+					
+					obj.html(str);
+					
+					// 点击
+					obj.find("a").click(function(){
+						// 获取点击的序号
+						var nowNum = parseInt($(this).attr("href").slice(1)); 
+						// 重新渲染数据
+						obj.html('');
+						pageNav(id,nowNum,allNum);
+					})
+					
+					// 创建非当前页a标签
+					function aHtml(nowNum,showNow){
+						var showNow = showNow || nowNum;  // 无传入时用当前页码
+						var H = '<a href="#'+nowNum+'">['+showNow+']</a>';
+						return H;
+					}
+					// 创建当前页span标签
+					function spanHtml(nowNum){
+						var H = '<span href="#'+nowNum+'">'+nowNum+'</span>';
+						return H;
+					}
+				}
+			})
+		</script>
+	</head>
+
+	<body>
+		<div id="pageNav"></div>
+	</body>
+
+</html>

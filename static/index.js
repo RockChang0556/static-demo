@@ -52,6 +52,36 @@ $(document).ready(function(){
             href: './demoList/楼层/index.html',
             img: './demoList/楼层/index.png'
         },
+        {
+            title: '瀑布流',
+            details: '瀑布流 瀑布流',
+            href: './demoList/瀑布流/index.html',
+            img: './demoList/瀑布流/index.png'
+        },
+        {
+            title: '九宫格-拖拽',
+            details: '九宫格-拖拽 九宫格-拖拽',
+            href: './demoList/九宫格 拖拽/index.html',
+            img: './demoList/九宫格 拖拽/drag.png'
+        },
+        {
+            title: '大学毕业项目',
+            details: '大学毕业项目 大学毕业项目',
+            href: './demoList/Group2/index.html',
+            img: './demoList/Group2/group.png'
+        },
+        {
+            title: 'miaov LOGO跳动',
+            details: 'miaov-LOGO跳动 miaov-LOGO跳动',
+            href: './demoList/miaov LOGO跳动/index.html',
+            img: './demoList/miaov LOGO跳动/index.png'
+        },
+        {
+            title: 'miaov-分页器',
+            details: 'miaov-分页器 miaov-分页器',
+            href: './demoList/miaov 分页器/index.html',
+            img: './demoList/miaov 分页器/page.png'
+        },
     ]
     let _demoList = $('#demo-list');
 

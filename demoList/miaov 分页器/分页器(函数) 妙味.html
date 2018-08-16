@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>分页器 妙味</title>
+		<style type="text/css">
+			*{
+				text-decoration: none;
+			}
+			#pageNav a{
+				margin: 0 5px;
+				color: black;
+			}
+		</style>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<!--分页器-->
+		<script type="text/javascript">
+
+			$(function() {
+				// 参数 id，当前页，总页数,回调函数
+				pageNav("pageNav", 1, 10, function(now, all) {
+					alert('当前页是'+now+'，总页数是'+all);
+				});
+
+				// 分页器----注意：html中需要有一个id为xxx的盒子
+				// 参数 id，当前页，总页数,回调函数
+				function pageNav(id, nowNum, allNum, call) {
+					if(!id) {
+						return false
+					};
+					var obj = $("#" + id);
+					var nowNum = nowNum || 1,
+						allNum = allNum || 5;
+
+					// 创建首页
+					if(nowNum >= 4 && allNum >= 6) {
+						var oA = $('<a href="#1">[首页]</a>');
+						obj.append(oA);
+					}
+					// 创建上一页
+					if(nowNum != 1) {
+						var oA = $('<a href="#' + (nowNum - 1) + '">[上一页]</a>');
+						obj.append(oA);
+					}
+
+					// 总页数<=5,直接排开
+					if(allNum <= 5) {
+						for(var i = 1; i <= allNum; i++) {
+							var oA = $('<a href="#' + i + '">[' + i + ']</a>');
+							if(nowNum == i) {
+								oA.text(i).css("color", "red");
+							}
+							obj.append(oA);
+						}
+						// 总页数>5,根据当前页数创建
+					} else {
+						for(var i = 1; i <= 5; i++) {
+							// 当前页小于3，创建前几个
+							if(nowNum < 3) {
+								var oA = $('<a href="#' + i + '">[' + i + ']</a>');
+								if(nowNum == i) {
+									oA.text(i).css("color", "red");
+								}
+								// 最后几个
+							} else if((allNum - nowNum) < 2) {
+								var oA = $('<a></a>');
+								oA.attr("href", "#" + (allNum - 5 + i)).css("color", "red");;
+								if((allNum - nowNum) == 0 && i == 5) {
+									oA.text(allNum - 5 + i);
+								} else if((allNum - nowNum) == 1 && i == 4) {
+									oA.text(allNum - 5 + i);
+								} else {
+									oA.text('[' + (allNum - 5 + i) + ']').css("color", "black");
+								}
+
+								// 中间部分	
+							} else {
+								var oA = $('<a href="#' + (nowNum - 3 + i) + '">[' + (nowNum - 3 + i) + ']</a>');
+								if(i == 3) {
+									oA.text(nowNum - 3 + i).css("color", "red");
+								}
+							}
+							obj.append(oA);
+						}
+					}
+
+					// 创建下一页
+					if(allNum - nowNum >= 1) {
+						var oA = $('<a href="#' + (nowNum + 1) + '">[下一页]</a>');
+						obj.append(oA);
+					}
+					// 创建尾页
+					if(allNum - nowNum >= 3 && allNum >= 6) {
+						var oA = $('<a href="#' + allNum + '">[尾页]</a>');
+						obj.append(oA);
+					}
+					call(nowNum, allNum);
+					// 点击
+					obj.find("a").click(function() {
+						obj.html('');
+						var nowNum = parseInt($(this).attr("href").slice(1));
+						pageNav(id, nowNum, allNum, call);
+					})
+
+				}
+
+			})
+		</script>
+	</head>
+
+	<body>
+		<div id="pageNav">
+				<!--<a href="#1">首页</a>
+				<a href="#1">上一页</a>
+				<a href="#1">[2]</a>
+				<a href="#1">[3]</a>
+				<a href="#1">4</a>
+				<a href="#1">[15]</a>  4
+				<a href="#1">[16]</a>
+				<a href="#1">下一页</a>
+				<a href="#1">尾页</a>-->
+			</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,44 @@
+aside{
+				padding-top: 84px;
+			}
+			aside h3{
+				padding: 0 25px;
+				text-align: center;
+				font-size: 40px;
+				text-transform: uppercase;
+				color: #3d4b66;
+				font-weight: 400;
+				line-height: 120px;
+				position: relative;
+				z-index: 1;
+			}
+			aside img{
+				width: 914px;
+				height: 618px;
+				display: block;
+				margin: auto;
+			}
+			.article_about_me{
+				width: 948px;
+				margin: auto;
+				text-align: center;
+				color: #626773;
+				padding-bottom: 70px;
+				position: relative;
+				z-index: 1;
+			}
+			.article_ME{
+				margin-top: 20px;
+				line-height: 45px;
+			}
+			/*名言*/
+			.article_cour{
+				line-height: 40px;
+				
+			}
+			.article_cour a{
+				color: cornflowerblue;
+			}
+			.article_cour a:hover{
+				color: #00BFFF;
+			}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			.wrap{
+				margin: 0 auto;
+				position: relative;
+			}
+			.wrap div{
+				padding: 5px;
+				float: left;
+			}
+			.wrap img{
+				width: 300px;
+				border: 1px solid #ff0;
+				border-radius: 10px;
+			}
+		</style>
+		<script src="./js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			// 这里用window.onload而不是$(function(){}),是为了避免图片重叠问题
+			window.onload = function(){
+				var imgW = $(".wrap div").outerWidth(),
+					cliW = $(window).width(),
+					cliH = $(window).height(),
+					view = Math.floor(cliW/imgW),
+					arr = [];
+				$(".wrap").width(view*imgW);  // 设置大盒子宽度，保持左右居中
+				show();
+				
+				// 自己滚动
+				setInterval(function(){
+					$(window).scrollTop($(window).scrollTop()+1);
+				},0.1);
+				
+				
+				// 滚动新建图片
+				var i = 1;
+				$(window).on("scroll",function(){
+					var minH = Math.min.apply(Math,arr),
+						scrollTop = $(window).scrollTop();
+					if(minH < scrollTop + cliH){
+						i++;
+						if(i>21)i = 1;  // 循环条件随意，但是要在图片范围内
+						var oDiv = $('<div><img src="img/img'+i+'.jpg"/></div>');
+						oDiv.appendTo($('.wrap'));
+						show();
+					}
+				})
+				
+				// 为每个图片找位置
+				function show(){
+					arr = [];  // 清空arr数据
+					for(var i=0;i<$(".wrap div").length;i++){
+						if(i<view){
+							arr.push($(".wrap div").eq(i).outerHeight());
+						}else{
+							var minH = Math.min.apply(Math,arr),
+								minInd = $.inArray(minH,arr);
+							$(".wrap div").eq(i).css("position","absolute");	
+							$(".wrap div").eq(i).animate({
+								"left" : minInd*imgW,
+								"top" : minH
+							},500)
+							arr[minInd] += $(".wrap div").eq(i).outerHeight();
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="wrap">
+			<div><img src="img/img1.jpg"/></div>
+			<div><img src="img/img2.jpg"/></div>
+			<div><img src="img/img3.jpg"/></div>
+			<div><img src="img/img4.jpg"/></div>
+			<div><img src="img/img5.jpg"/></div>
+			<div><img src="img/img6.jpg"/></div>
+			<div><img src="img/img7.jpg"/></div>
+			<div><img src="img/img8.jpg"/></div>
+			<div><img src="img/img9.jpg"/></div>
+			<div><img src="img/img10.jpg"/></div>
+			<div><img src="img/img11.jpg"/></div>
+			<div><img src="img/img12.jpg"/></div>
+			<div><img src="img/img13.jpg"/></div>
+			<div><img src="img/img14.jpg"/></div>
+			<div><img src="img/img15.jpg"/></div>
+			<div><img src="img/img16.jpg"/></div>
+			<div><img src="img/img17.jpg"/></div>
+			<div><img src="img/img18.jpg"/></div>
+		</div>
+	</body>
+</html>
