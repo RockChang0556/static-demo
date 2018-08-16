@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				text-decoration: none;
+			}
+			ul {
+				position: relative;
+				width: 330px;
+				margin: 20px auto;
+			}
+			ul li {
+				width: 100px;
+				height: 100px;
+				float: left;
+				background: rgba(0, 0, 0, 0.5);
+				text-align: center;
+				line-height: 100px;
+				border-radius: 20px;
+				color: white;
+				margin: 0 10px 10px 0;
+			}
+			ul .newli {
+				width: 96px;
+				height: 96px;
+				background: none;
+				border: 2px dashed #f00;
+			}
+		</style>
+		<script src="./js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				// 存储每个li的left与top值
+				var arr = [];
+				$('.lis').each(function(){
+					arr.push({
+						'left' : $(this).position().left,
+						'top' : $(this).position().top
+					})
+				})
+				
+				$('.lis').on('mousedown',function(ev){
+					var ind = $(this).index();
+					// 创建边框 盒子
+					var newLi = $('<li class="newli"></li>');
+					newLi.css({'left':arr[ind].left-2,'top':arr[ind].top-2});
+					$(this).css({'position':'absolute',
+						'left':arr[ind].left,
+						'top':arr[ind].top});
+					newLi.insertBefore($(this));
+					
+					var disX = ev.pageX - arr[ind].left;
+					var disY = ev.pageY - arr[ind].top;
+					
+					// 拖动改变位置
+					var that = $(this);
+					$(document).on('mousemove',function(ev){
+						var x = ev.pageX - disX;
+						var y = ev.pageY - disY;
+						that.css({'left':x,'top':y});
+						newLi.attr('style','');
+						
+						$('.lis').each(function(i) {
+							var lisX = arr[i].left - $('.lis').width()/2;
+							var lisY = arr[i].top - $('.lis').height()/2;
+							if(x>lisX && y>lisY){
+								// 向前移动，在前面添加虚线盒子，向后移动，在后面添加虚线盒子
+								if(i < ind){
+									newLi.insertBefore($('.lis').eq(i));
+								}else{
+									newLi.insertAfter($('.lis').eq(i));
+								}
+							}
+						});
+						
+					}).on('mouseup',function(){
+						$(document).off('mousemove');
+						that.insertBefore(newLi).attr('style','');
+						newLi.remove();
+					})
+				})
+			})
+		</script>
+	</head>
+
+	<body>
+		<ul class="ul">
+			<li class="lis">1</li>
+			<li class="lis">2</li>
+			<li class="lis">3</li>
+			<li class="lis">4</li>
+			<li class="lis">5</li>
+			<li class="lis">6</li>
+			<li class="lis">7</li>
+			<li class="lis">8</li>
+			<li class="lis">9</li>
+		</ul>
+	</body>
+
+</html>
