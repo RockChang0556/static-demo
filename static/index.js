@@ -82,6 +82,12 @@ $(document).ready(function(){
             href: './demoList/miaov 分页器/index.html',
             img: './demoList/miaov 分页器/page.png'
         },
+        {
+            title: '随机数二维码',
+            details: '随机数二维码 随机数二维码',
+            href: './demoList/随机数二维码/index.html',
+            img: './demoList/miaov 分页器/page.png'
+        },
     ]
     let _demoList = $('#demo-list');
 
